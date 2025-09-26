@@ -1,7 +1,6 @@
 {
   "dependencies": ["."],
   "graphs": {
-    "onboarding_graph": "./agents/workers.py:create_onboarding_graph"
-  },
-  "env": ".env"
+    "onboarding_graph": "./agents/workers.py:create_initialisation_agent"
+  }
 }

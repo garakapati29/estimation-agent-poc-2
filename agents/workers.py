@@ -2,33 +2,28 @@
 Initialisation agent for handling Step 1 onboarding.
 """
 
+import os
+from dotenv import load_dotenv
 from langgraph.prebuilt import create_react_agent
 from langchain_openai import ChatOpenAI
-from prompts.agent_prompts import INITIALISATION_AGENT_PROMPT
-from factories.intialisation_agent_tools_factory import make_onboarding_tools
-from tools.intialisation_agent_tools import load_onboarding_state
+from prompts.prompts import INTIALISATION_AGENT_PROMPT
+# Load environment variables
+load_dotenv()
 
-def create_initialisation_agent(state):
+def create_initialisation_agent():
     """Create the initialisation agent for Step 1 onboarding."""
-    
+
     # Initialize LLM for initialization agent
     model = ChatOpenAI(model="gpt-4o", temperature=0)
-    
-    # Get tools from factory
-    tools = make_onboarding_tools(state)
-    
+
+    # Get tools from factory    
     # Create and return the react agent
     # This already returns a complete node function that handles tool usage
     agent = create_react_agent(
+        tools=[],
         model=model,
-        tools=tools,
-        prompt=INITIALISATION_AGENT_PROMPT,
+        prompt=INTIALISATION_AGENT_PROMPT,
         name="initialisation_agent"
     )
 
     return agent
-
-def create_onboarding_graph():
-    """Create the onboarding workflow using the initialization agent."""
-    onboarding_state = load_onboarding_state()
-    return create_initialisation_agent(onboarding_state)
